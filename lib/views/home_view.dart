@@ -26,7 +26,8 @@ class HomeView extends GetView<HomeController> {
 
   Widget taskList(List<Task>? tasks) {
     return tasks == null
-        ? Padding(
+        ? Container(
+            alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
