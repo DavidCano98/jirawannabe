@@ -17,6 +17,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => controller.showSearchBar.value = true);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: appBar(),
       body: Obx(
         () => taskList(controller.tasks.value),
