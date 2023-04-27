@@ -160,40 +160,44 @@ class HomeView extends GetView<HomeController> {
           controller.temporaryFilter.value = List.from(controller.filter);
           Get.dialog(
             AlertDialog(
-              content: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      ListView.separated(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) => Obx(
-                                () => CheckboxListTile(
-                                  title: Text(Status.values[index].name.tr),
-                                  value: controller.temporaryFilter.contains(Status.values[index]),
-                                  onChanged: (newValue) {
-                                    if (newValue != null) {
-                                      if (newValue) {
-                                        controller.temporaryFilter.add(Status.values[index]);
-                                      } else {
-                                        controller.temporaryFilter.remove(Status.values[index]);
+              content: Container(
+                width: MediaQuery.of(Get.context!).size.width,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        ListView.separated(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) => Obx(
+                                  () => CheckboxListTile(
+                                    title: Text(Status.values[index].name.tr),
+                                    value:
+                                        controller.temporaryFilter.contains(Status.values[index]),
+                                    onChanged: (newValue) {
+                                      if (newValue != null) {
+                                        if (newValue) {
+                                          controller.temporaryFilter.add(Status.values[index]);
+                                        } else {
+                                          controller.temporaryFilter.remove(Status.values[index]);
+                                        }
                                       }
-                                    }
-                                  },
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading, //  <-- leading Checkbox
+                                    },
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading, //  <-- leading Checkbox
+                                  ),
                                 ),
-                              ),
-                          separatorBuilder: (context, index) => SizedBox(
-                                height: 10,
-                              ),
-                          itemCount: Status.values.length),
-                      ElevatedButton(
-                        onPressed: () async => await controller.filterSavePressed(),
-                        child: Text("save".tr),
-                      ),
-                    ],
+                            separatorBuilder: (context, index) => SizedBox(
+                                  height: 10,
+                                ),
+                            itemCount: Status.values.length),
+                        ElevatedButton(
+                          onPressed: () async => await controller.filterSavePressed(),
+                          child: Text("save".tr),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
