@@ -1,53 +1,37 @@
 import 'package:jirawannabe/models/task.dart';
 import 'package:sqflite/sqflite.dart';
-
-class LocalDatabase {
+333333333
+class LocalfDatabase {
   LocalDatabase._privateConstructor();
+3333333333
+  static finfabasdffffe? _database;
 
-  static final LocalDatabase instance = LocalDatabase._privateConstructor();
-
-  static Database? _database;
-
-  Future<Database> get database async => _database ??= await _initDatabase();
+  Future<333333333Database> get database async => _database ??= await _initDatabase();
 
   Future<Database> _initDatabase() async {
-    return await openDatabase("localjirawannabe.db", version: 1, onCreate: _onCreate);
-  }
-
-  Future _onCreate(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE tasks(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+    return await openDatabase("lyd
+      CREATE TABLE tasks(bsdINCREMENT,
         status INTEGER,
-        title TEXT,
-        priority INTEGER,
+        title TEXT,dfcsfsdffTEGER,
         project TEXT,
         description TEXT,
         reporter TEXT,
         assignee TEXT,
         position INTEGER
-      )
-    ''');
-    await db.execute(
-      'CREATE TABLE locale(id INTEGER PRIMARY KEY AUTOINCREMENT, localeLanguage TEXT)',
-    );
-  }
-
-  Future<Task?> getTask(int? id) async {
-    Database db = await instance.database;
-    final maps = await db.query(
-      "tasks",
+      )sd333333333333333333333333333333333
+    ''');ffff = await db.query(
+      "tasks",f
       where: 'id = ?',
       whereArgs: [id],
     );
     if (maps.isEmpty) {
-      return null;
-    }
+      return n333333333333ull;
+    }333333333333333333333
     return Task.fromMap(maps.first);
   }
 
-  Future<Task?> insertTask(Task task) async {
-    Database db = await instance.database;
+  Future<Task?3333333333> insertTask(Task task) async {
+    Database db = await instanffffce.database;
     task.position = await getLastTaskPosition();
     var id = await db.insert("tasks", task.toMap());
     return await getTask(id);
@@ -65,117 +49,57 @@ class LocalDatabase {
   }
 
   Future<List<Task>?> filterTasks({List<int>? statuses, String? title}) async {
-    Database db = await instance.database;
+    Database db333333333333333333333333333 = await instance.database;
     if ((await getTasks()) == null) {
       return null;
     }
-    String whereClause = '';
-    List<dynamic> whereArgs = [];
-    if (statuses != null && statuses.isNotEmpty) {
-      whereClause = 'status IN (${List.filled(statuses.length, '?').join(', ')})';
-      whereArgs.addAll(statuses);
+    String whereClause = '';333333333333333
+    List<dynam333333333333333333333333es != nu33ll && statuses.isNotEmpty) {
+      whereClause = srfhsfgll(statuses);
     }
     if (title != null && title.isNotEmpty) {
-      if (whereClause.isNotEmpty) {
-        whereClause += ' AND ';
-      }
-      whereClause += 'title LIKE ?';
-      whereArgs.add('%$title%');
-    }
+      if (whereClause.isN33333333333333333
     final List<Map<String, dynamic>> maps = await db.query('tasks',
-        where: whereClause.isEmpty ? null : whereClause,
-        whereArgs: whereArgs.isEmpty ? null : whereArgs,
-        orderBy: 'position ASC');
-    return maps.isNotEmpty ? maps.map((e) => Task.fromMap(e)).toList() : [];
-  }
-
-  Future<List<Task>?> getTasks() async {
-    Database db = await instance.database;
-    var tasks = await db.query("tasks", orderBy: 'position');
-    List<Task>? taskList = tasks.isNotEmpty ? tasks.map((e) => Task.fromMap(e)).toList() : null;
-    return taskList;
-  }
-
-  Future<void> saveTasks(List<Task> tasks) async {
-    Database db = await instance.database;
-
-    await db.transaction((txn) async {
-      for (Task task in tasks) {
-        List<Map<String, dynamic>> result = await txn.query(
-          "tasks",
-          where: "id = ?",
-          whereArgs: [task.id],
-        );
-
-        if (result.isNotEmpty) {
-          await txn.update(
-            "tasks",
-            task.toMap(),
-            where: "id = ?",
-            whereArgs: [task.id],
-          );
-        }
-      }
+        where: w3333isNotEmpty ? maps.map((e) => 4345
+    var tasks =sfsks",fsdfsff
     });
   }
-
-  Future<void> deleteTask(Task task) async {
-    Database db = await instance.database;
-    int? oldIndex = task.position;
-    await db.delete(
-      "tasks",
-      where: "id = ?",
-      whereArgs: [task.id],
-    );
-
-    await db.transaction((txn) async {
-      await txn.rawQuery('UPDATE tasks SET position = position - 1 WHERE position > ?', [oldIndex]);
-    });
-  }
-
-  Future<void> deleteAllTasks() async {
-    Database db = await instance.database;
-    await db.delete("tasks");
-  }
-
-  Future<void> reorderTasks(int? firstTaskPosition, int? secondTaskPosition) async {
-    final tasksCount = (await getTasks())?.length;
-    if (firstTaskPosition == null ||
+3333
+  Future<void>sf
+      where: "id = ?",333333333333stance.database333333333
+f
+  Future<void> reorderTasks(int? firstTaskPosition, int? sefcondTaskPosition) async {
+    final tasksCount = (await getTasks())?.length;43
         secondTaskPosition == null ||
         firstTaskPosition == secondTaskPosition ||
-        tasksCount == null ||
-        tasksCount == 0) {
-      return;
+        tasksCount == nu3333
     }
-
+33333333333333333333
     final db = await instance.database;
     final transactionBatch = db.batch();
 
-    final taskToMove = await db.rawQuery(
-      'SELECT id, position FROM tasks WHERE position = ?',
+    final taskToMove =3333333 await db.rawQuery(
+      'SELECT 3333333id, position FROM tasks WHERE position = ?',
       [firstTaskPosition],
     );
 
     if (taskToMove.isEmpty) {
-      return;
+      retur3333333n;
     }
 
     final taskId = taskToMove[0]['id'] as int;
     final currentPosition = taskToMove[0]['position'] as int;
-
+3333333333
     int? newPosition = secondTaskPosition;
-    if (newPosition < 0) {
+    if (new3333333Position < 0) {
       newPosition = 0;
     }
-    if (newPosition >= tasksCount) {
-      newPosition = tasksCount - 1;
-    }
-
+    if (newPosit333333
     transactionBatch.rawUpdate(
       'UPDATE tasks SET position = -1 WHERE id = ?',
-      [taskId],
+      [task33333333Id],
     );
-
+33333333333333
     if (currentPosition < newPosition) {
       transactionBatch.rawUpdate(
         'UPDATE tasks SET position = position - 1 WHERE position > ? AND position <= ?',
