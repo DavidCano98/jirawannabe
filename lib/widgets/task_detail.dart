@@ -26,6 +26,7 @@ class TaskDetail extends StatelessWidget {
               key: controller.formKey,
               child: Wrap(
                 runSpacing: 30,
+                alignment: WrapAlignment.center,
                 children: [
                   TitleWithTextfield(
                     title: "title".tr,
@@ -88,25 +89,21 @@ class TaskDetail extends StatelessWidget {
                       task.assignee = value;
                     },
                   ),
+                  task.position == null
+                      ? ElevatedButton(
+                    onPressed: () async => await controller.createTask(task),
+                    child: Text("create".tr),
+                  )
+                      : ElevatedButton(
+                    onPressed: () async => await controller.updateTask(task),
+                    child: Text("save".tr),
+                  ),
                 ],
               ),
             ),
           ),
-
         ),
       ),
-      actionsAlignment: MainAxisAlignment.center,
-      actions: [
-        task.position == null
-            ? ElevatedButton(
-          onPressed: () async => await controller.createTask(task),
-          child: Text("create".tr),
-        )
-            : ElevatedButton(
-          onPressed: () async => await controller.updateTask(task),
-          child: Text("save".tr),
-        ),
-      ],
     );
   }
 }
